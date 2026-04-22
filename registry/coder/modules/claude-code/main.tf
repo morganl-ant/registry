@@ -101,12 +101,6 @@ variable "claude_binary_path" {
   }
 }
 
-variable "install_via_npm" {
-  type        = bool
-  description = "Install Claude Code via npm instead of the official installer. Useful if npm is preferred or the official installer fails."
-  default     = false
-}
-
 variable "enable_ai_gateway" {
   type        = bool
   description = "Use AI Gateway for Claude Code. https://coder.com/docs/ai-coder/ai-gateway"
@@ -194,7 +188,6 @@ module "coder_utils" {
     ARG_CLAUDE_CODE_VERSION='${var.claude_code_version}' \
     ARG_INSTALL_CLAUDE_CODE='${var.install_claude_code}' \
     ARG_CLAUDE_BINARY_PATH='${var.claude_binary_path}' \
-    ARG_INSTALL_VIA_NPM='${var.install_via_npm}' \
     ARG_WORKDIR='${local.workdir}' \
     ARG_MCP='${var.mcp != null ? base64encode(replace(var.mcp, "'", "'\\''")) : ""}' \
     ARG_MCP_CONFIG_REMOTE_PATH='${base64encode(jsonencode(var.mcp_config_remote_path))}' \

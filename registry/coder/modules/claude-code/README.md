@@ -93,9 +93,6 @@ Claude Code then routes API requests through Coder's AI Gateway instead of direc
 
 This example shows version pinning, a pre-installed binary path, a custom model, and MCP servers.
 
-> [!WARNING]
-> **Deprecation notice**: `install_via_npm = true` will be removed in the next major release. Prefer the default binary installer.
-
 ```tf
 module "claude-code" {
   source   = "registry.coder.com/coder/claude-code/coder"

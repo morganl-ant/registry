@@ -14,7 +14,6 @@ ARG_INSTALL_CLAUDE_CODE=${ARG_INSTALL_CLAUDE_CODE:-}
 ARG_CLAUDE_BINARY_PATH=${ARG_CLAUDE_BINARY_PATH:-"$HOME/.local/bin"}
 ARG_CLAUDE_BINARY_PATH="${ARG_CLAUDE_BINARY_PATH/#\~/$HOME}"
 ARG_CLAUDE_BINARY_PATH="${ARG_CLAUDE_BINARY_PATH//\$HOME/$HOME}"
-ARG_INSTALL_VIA_NPM=${ARG_INSTALL_VIA_NPM:-false}
 ARG_MCP=$(echo -n "${ARG_MCP:-}" | base64 -d)
 ARG_MCP_CONFIG_REMOTE_PATH=$(echo -n "${ARG_MCP_CONFIG_REMOTE_PATH:-}" | base64 -d)
 ARG_ENABLE_AI_GATEWAY=${ARG_ENABLE_AI_GATEWAY:-false}
@@ -27,7 +26,6 @@ printf "ARG_CLAUDE_CODE_VERSION: %s\n" "$ARG_CLAUDE_CODE_VERSION"
 printf "ARG_WORKDIR: %s\n" "$ARG_WORKDIR"
 printf "ARG_INSTALL_CLAUDE_CODE: %s\n" "$ARG_INSTALL_CLAUDE_CODE"
 printf "ARG_CLAUDE_BINARY_PATH: %s\n" "$ARG_CLAUDE_BINARY_PATH"
-printf "ARG_INSTALL_VIA_NPM: %s\n" "$ARG_INSTALL_VIA_NPM"
 printf "ARG_MCP: %s\n" "$ARG_MCP"
 printf "ARG_MCP_CONFIG_REMOTE_PATH: %s\n" "$ARG_MCP_CONFIG_REMOTE_PATH"
 printf "ARG_ENABLE_AI_GATEWAY: %s\n" "$ARG_ENABLE_AI_GATEWAY"
@@ -101,23 +99,15 @@ function install_claude_code_cli() {
     return
   fi
 
-  # Use npm when install_via_npm is true
-  if [ "$ARG_INSTALL_VIA_NPM" = "true" ]; then
-    echo "WARNING: npm installation method will be deprecated and removed in the next major release."
-    echo "Installing Claude Code via npm (version: $ARG_CLAUDE_CODE_VERSION)"
-    npm install -g "@anthropic-ai/claude-code@$ARG_CLAUDE_CODE_VERSION"
-    echo "Installed Claude Code via npm. Version: $(claude --version || echo 'unknown')"
-  else
-    echo "Installing Claude Code via official installer"
-    set +e
-    curl -fsSL claude.ai/install.sh | bash -s -- "$ARG_CLAUDE_CODE_VERSION" 2>&1
-    CURL_EXIT=${PIPESTATUS[0]}
-    set -e
-    if [ $CURL_EXIT -ne 0 ]; then
-      echo "Claude Code installer failed with exit code $CURL_EXIT"
-    fi
-    echo "Installed Claude Code successfully. Version: $(claude --version || echo 'unknown')"
+  echo "Installing Claude Code via official installer"
+  set +e
+  curl -fsSL claude.ai/install.sh | bash -s -- "$ARG_CLAUDE_CODE_VERSION" 2>&1
+  CURL_EXIT=${PIPESTATUS[0]}
+  set -e
+  if [ $CURL_EXIT -ne 0 ]; then
+    echo "Claude Code installer failed with exit code $CURL_EXIT"
   fi
+  echo "Installed Claude Code successfully. Version: $(claude --version || echo 'unknown')"
 
   ensure_claude_in_path
 }
