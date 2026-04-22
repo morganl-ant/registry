@@ -26,7 +26,7 @@ variable "icon" {
 
 variable "workdir" {
   type        = string
-  description = "The folder to run Claude Code in."
+  description = "Project directory to pre-configure for Claude Code. The module creates this directory if it is missing, registers MCP servers against it, and pre-accepts the trust/onboarding prompts for it in ~/.claude.json."
 }
 
 variable "pre_install_script" {

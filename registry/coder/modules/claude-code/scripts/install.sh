@@ -159,8 +159,6 @@ function configure_standalone_mode() {
   fi
 
   local claude_config="$HOME/.claude.json"
-  local workdir_normalized
-  workdir_normalized=$(echo "$ARG_WORKDIR" | tr '/' '-')
 
   # Create or update .claude.json with minimal configuration for API key auth
   # This skips the interactive login prompt and onboarding screens
